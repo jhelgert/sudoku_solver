@@ -38,7 +38,7 @@ Sudoku::Sudoku(std::string str)
 };
 
 // Member functions
-inline bool Sudoku::numValid(size_t num, size_t row, size_t col) {
+inline bool Sudoku::numValid(size_t num, size_t row, size_t col) const {
     std::uint32_t shift = 1U << num;
     return !(((binrows[row] & shift) || (bincols[col] & shift)) ||
              (binboxes[3 * (row / 3) + (col / 3)] & shift));
@@ -96,7 +96,7 @@ bool Sudoku::solve(bool timing) {
     return status;
 }
 
-void Sudoku::print() {
+void Sudoku::print() const {
     printf("\n");
     int N = gridsize;
     // printf("Gridsize: %zu\n", gridsize);
@@ -121,11 +121,11 @@ void Sudoku::print() {
     printf("\n");
 }
 
-double Sudoku::getRuntime() {
+double Sudoku::getRuntime() const {
     return runtime.count();
 }
 
-inline std::pair<int, int> Sudoku::findEmptyCell() {
+inline std::pair<int, int> Sudoku::findEmptyCell() const {
     std::pair<int, int> t{-1, -1};
     for (size_t i = 0; i < 9; ++i) {
         uint32_t col = BIT_SCAN_FORWARD(~(binindx[i])) - 1;

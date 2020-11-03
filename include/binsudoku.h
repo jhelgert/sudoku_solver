@@ -23,7 +23,7 @@ class Sudoku {
     ~Sudoku() = default;
 
     // Member functions
-    bool numValid(size_t num, size_t row, size_t col);
+    bool numValid(size_t num, size_t row, size_t col) const;
 
     void setNum(size_t num, size_t row, size_t col);
 
@@ -33,12 +33,12 @@ class Sudoku {
 
     bool solver();
 
-    void print();
+    void print() const;
 
-    double getRuntime();
+    double getRuntime() const;
 
   private:
-    std::pair<int, int> findEmptyCell();
+    std::pair<int, int> findEmptyCell() const;
     void encodeToBinary();
 };
 
