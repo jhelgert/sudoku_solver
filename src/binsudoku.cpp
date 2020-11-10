@@ -8,11 +8,22 @@
 #include <numeric>
 #include <vector>
 
+/*
+Use a very fast specific machine instruction inside find_empty_cell()
+*/ 
 #if defined(__GNUC__) || defined(__clang__)
-#define BIT_SCAN_FORWARD __builtin_ffs
+    inline int32_t bit_scan_forward(int x){
+        return __builtin_ffs(x) - 1;
+    }
 #elif defined(_MSC_VER)
-#include <intrin.h>
-#define BIT_SCAN_FORWARD _BitScanForward
+    #include <intrin.h>
+    inline int32_t bit_scan_forward(int x){
+        unsigned long z;
+        _BitScanForward(&z, x);
+        return z;
+    }
+#else
+    #error "Only gcc, clang and mvsc compiler are supported."
 #endif
 
 /* Constructor */
@@ -128,7 +139,7 @@ double Sudoku::getRuntime() const {
 inline std::pair<int, int> Sudoku::findEmptyCell() const {
     std::pair<int, int> t{-1, -1};
     for (size_t i = 0; i < 9; ++i) {
-        uint32_t col = BIT_SCAN_FORWARD(~(binindx[i])) - 1;
+        int32_t col = bit_scan_forward(~(binindx[i]));
         if (col != -1 && col != 9) {
             t.first  = i;
             t.second = col;
